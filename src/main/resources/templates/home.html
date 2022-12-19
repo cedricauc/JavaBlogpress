@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="~{header :: jscssinclude}"></head>
+	<body>
+		<div th:replace="~{header :: header_navigation}"></div>
+			<!-- Define the template -->
+			<script id="blog_template" type="text/template">
+				{{#blogs}}
+				 <div class="card bg-white mb-3">
+				   <div class="card-body">
+					<h5 class="card-title">{{title}}</h5>
+					<p class="card-text">{{body}}</p>
+					 <form th:action="@{/viewBlog}" method="get">
+						<input type="hidden" name="blogId" value="{{id}}">
+						<button type="submit" class="btn btn-primary">Read More ..</button>
+					 </form>
+				   </div>
+				   <div class="card-footer text-muted">
+					By : <b>{{createdBy}}</b> &nbsp; comments: <b>{{comments.length}}</b> &nbsp; Published on <b>{{publishDateForDisplay}}</b>
+				   </div>
+				 </div>
+				{{/blogs}}	
+			</script>
+		
+		   <div class="container">
+				<div class="blogpress-section" id="blogList">
+				</div>
+		   </div>
+		   
+		 <script th:inline="javascript" type="text/javascript">
+			 async function fetchData(){
+				 let blogData = {}
+				 const template = $("#blog_template").html();
+				 const response = await fetch("/api/listBlogs")
+				 if (response.status == 200) {
+					 blogData["blogs"] = await response.json();
+					 const text = Mustache.render(template, blogData);
+					 $("#blogList").html(text);
+				 }
+			 }
+
+			 window.addEventListener("load", (event) => {
+				 fetchData()
+			 })
+		</script>
+	</body>
+</html>
