@@ -195,7 +195,6 @@ public class BlogController {
             }
         }
 
-
         model.addAttribute("blogSearchResultLst",blogSearchResultLst);
         model.addAttribute("searchText", searchText);
         return "search";
