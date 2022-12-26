@@ -16,4 +16,15 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
             value = "SELECT * FROM comment WHERE blog_id = :blogId",
             nativeQuery=true)
     List<Comment> findAllByBlogId(@Param("blogId") Long blogId);
+
+    @Query(
+            value = "SELECT * FROM comment LIMIT :size OFFSET :from",
+            nativeQuery=true)
+    List<Comment> getComments(@Param("from") int from, @Param("size") int size);
+
+    @Query(
+            value = "SELECT * FROM comment LEFT JOIN blog ON comment.blog_id = blog.id WHERE status = :status LIMIT :size OFFSET :from ",
+            nativeQuery=true)
+    List<Comment> getCommentsForStatus(@Param("status") String status, @Param("from") int from, @Param("size") int size);
+
 }

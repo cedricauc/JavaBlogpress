@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-	<head th:replace="~{header :: jscssinclude}"></head>
+	<head th:replace="header :: jscssinclude"></head>
 	<body>
-		<div th:replace="~{header :: header_navigation}"></div>
+		<div th:replace="header :: header_navigation"></div>
 			<!-- Define the template -->
 			<script id="blog_template" type="text/template">
 				{{#blogs}}

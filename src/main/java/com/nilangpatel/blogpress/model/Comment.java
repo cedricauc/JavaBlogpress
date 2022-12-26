@@ -2,6 +2,7 @@ package com.nilangpatel.blogpress.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nilangpatel.blogpress.util.BlogpressUtil;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -36,6 +37,7 @@ public class Comment {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="blogId", nullable=false)
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	private Blog blog;
 
 	public String getCreatedDateForDisplay() {

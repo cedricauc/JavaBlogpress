@@ -51,14 +51,6 @@ public class BlogService {
 		return blogRepository.getCurrentChildSequence(blogId,parentCommentId);
 	}
 
-	public Set<Comment> getAllComments(int from, int size){
-		return blogRepository.getComments(from, size);
-	}
-
-	public Set<Comment> getCommentsForStatus(String status, int from, int size){
-		return blogRepository.getCommentsForStatus(status, from, size);
-	}
-
 	public void updateCommentStatus(Long blogId, String commentId, Set<Comment> commentList, String updatedStatus) {
 		if(commentList !=null) {
 			for(Comment comment: commentList) {

@@ -1,6 +1,5 @@
 package com.nilangpatel.blogpress.service;
 
-import com.nilangpatel.blogpress.model.Blog;
 import com.nilangpatel.blogpress.model.Comment;
 import com.nilangpatel.blogpress.repository.CommentRepository;
 import org.slf4j.Logger;
@@ -36,6 +35,26 @@ public class CommentService {
         }
 
         return commentList;
+    }
+
+    public List<Comment> getAllComments(int from, int size){
+        return commentRepository.getComments(from, size);
+    }
+
+    public List<Comment> getCommentsForStatus(String status, int from, int size){
+        return commentRepository.getCommentsForStatus(status, from, size);
+    }
+
+    public void updateCommentStatus(Long commentId, List<Comment> commentList, String updatedStatus) {
+        if(commentList !=null) {
+            for(Comment comment: commentList) {
+                if(comment.getCommentId().equals(commentId)) {
+                    comment.setStatus(updatedStatus);
+                    commentRepository.save(comment);
+                    break;
+                }
+            }
+        }
     }
 
 }

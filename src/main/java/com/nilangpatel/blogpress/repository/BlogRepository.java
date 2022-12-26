@@ -22,15 +22,6 @@ public interface BlogRepository extends JpaRepository<Blog, Long>{
             nativeQuery=true)
     List<Blog> search(@Param("searchTxt") String searchTxt);
 
-    @Query(
-            value = "SELECT * FROM comment LIMIT :size OFFSET :from",
-            nativeQuery=true)
-    Set<Comment> getComments(@Param("from") int from, @Param("size") int size);
-
-    @Query(
-            value = "SELECT * FROM comment WHERE status = :status LIMIT :size OFFSET :from ",
-            nativeQuery=true)
-    Set<Comment> getCommentsForStatus(@Param("status") String status, @Param("from") int from, @Param("size") int size);
 
     @Query(
             value = "SELECT * FROM blog AS b",

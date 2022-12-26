@@ -4,23 +4,21 @@
 <head th:replace="header :: jscssinclude"></head>
 
 <body>
-    <div th:replace="header :: header_navigation">
-    </div>
+    <div th:replace="header :: header_navigation"></div>
 	<div class="col-sm-4" th:fragment="admin_navigation">
 		<h3>Control Panel Menu</h3>
 		<ul class="nav nav-pills flex-column bg-light">
 			<li class="nav-item">
-				<span class="nav-link active">Blogpress Administration</span>
+				<span th:classappend="${pagename == 'controlPage' ? 'active' : ''}"  class="nav-link">Blogpress Administration</span>
 			</li>
 			<li class="nav-item">
-	          <a class="nav-link" th:href="@{/manageBlogs}">Manage Blogs</a>
+	          <a th:classappend="${pagename == 'manageBlogs' ? 'active' : ''}"  class="nav-link" th:href="@{/manageBlogs}">Manage Blogs</a>
 	        </li>
 	        <li class="nav-item" th:if="${hasAdminRole == true}">
-	          <a class="nav-link" th:href="@{/showComments}">Manage Comments</a>
+	          <a th:classappend="${pagename == 'showComments' ? 'active' : ''}" class="nav-link" th:href="@{/showComments}">Manage Comments</a>
 	        </li>
 	      </ul>
-	</div>  
-	 	
+	</div>
 </body>
 
 </html>

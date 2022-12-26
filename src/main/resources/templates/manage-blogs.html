@@ -5,9 +5,7 @@
 		<div th:replace="header :: header_navigation"></div>
 		<div class="container blogpress-section">
 			<div class="row">
-				 <div th:replace="control-page :: admin_navigation">
-					
-				</div>
+				<div th:replace="control-page :: admin_navigation"></div>
 				<div class="col-sm-8">
 					<h2>Manage Blogs</h2>
 					 <div class="container">
@@ -26,7 +24,7 @@
 							 </form>
 						   </div>
 						   <div class="card-footer text-muted">
-							By : <b> <span th:text="${blog.createdBy}"></span></b> &nbsp; comments: <b><span th:text="${blog.commentSize}"></span></b> &nbsp; Published on <b><span th:text="${blog.publishDateForDisplay}"></span></b>
+							By : <b> <span th:text="${blog.createdBy}"></span></b> comments: <b><span th:text="${blog.commentSize}"></span></b> &nbsp; Published on <b><span th:text="${blog.publishDateForDisplay}"></span></b>
 						   </div>
 						 </div>
 					  </div>

@@ -57,7 +57,7 @@ public class BlogRESTController {
     @RequestMapping(value = "/listAllComments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Comment>> getAllCommentJSON() {
         logger.info("getting all blog data in json format ");
-        List<Comment> allComments = (List<Comment>) blogService.getAllComments(0, 100);
+        List<Comment> allComments = commentService.getAllComments(0, 100);
 
         return new ResponseEntity<List<Comment>>(allComments, HttpStatus.OK);
     }

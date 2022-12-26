@@ -46,6 +46,7 @@ public class BlogController {
     public String showControlPage(Model model) {
         logger.info("This is control page ");
         setProcessingData(model, BlogpressConstants.TITLE_LANDING_CONTROL_PAGE);
+        model.addAttribute("pagename", "controlPage");
         return "control-page";
     }
 
@@ -87,7 +88,6 @@ public class BlogController {
         blog.setStatus(BlogStatus.PUBLISHED.getStatus());
 
         blogService.addUpdateBlog(blog);
-
         return "home";
     }
 
@@ -115,7 +115,7 @@ public class BlogController {
         }
 
         model.addAttribute("blogs",blogSearchResultLst);
-
+        model.addAttribute("pagename", "manageBlogs");
         return "manage-blogs";
     }
 
@@ -154,7 +154,7 @@ public class BlogController {
         logger.info("showing view blog page");
         if(blogId !=null) {
             Blog blog = blogService.getBlog(blogId);
-            List<Comment> approvedCommentLst = commentService.getAllComments(blogId);;
+            List<Comment> approvedCommentLst = commentService.getAllComments(blogId);
             if(approvedCommentLst !=null && !approvedCommentLst.isEmpty()) {
                 approvedCommentLst = approvedCommentLst.stream().
                         filter(comment->comment.getStatus().equalsIgnoreCase("A"))
@@ -202,25 +202,24 @@ public class BlogController {
 
     @PostMapping("/updateCommentStatus")
     public String updateCommentStatus(@RequestParam(value = "blogId",required = true) Long blogId,
-                                      @RequestParam(value = "commentId",required = true) String commentId,
+                                      @RequestParam(value = "commentId",required = true) Long commentId,
                                       @RequestParam(value = "commentStatus",required = true) String commentStatus,
                                       Model model) {
-
         logger.info("Approve comment");
 
         if(blogId !=null) {
             Blog blog = blogService.getBlog(blogId);
+            List<Comment> commentLst = commentService.getAllComments(blogId);
             if(blog !=null) {
-                blogService.updateCommentStatus(blogId, commentId, blog.getComments(), commentStatus);
+                commentService.updateCommentStatus(commentId, commentLst, commentStatus);
             }
         }
         return "manage-comments";
     }
 
     @GetMapping("/showComments")
-    public String showManageComments() {
-
-
+    public String showManageComments(Model model) {
+        model.addAttribute("pagename", "showComments");
         return "manage-comments";
     }
 
@@ -233,11 +232,9 @@ public class BlogController {
                              @RequestParam(value = "parentId",required = false,defaultValue="0") Long parentId,
                              @RequestParam(value = "parentPosition",required = false) String parentPosition,
                              Model model) {
-
         logger.info("Add comment page");
 
         if(blogId !=null) {
-
             StringBuffer currentPositionStr= new StringBuffer();
             int childSequence = blogService.getCurrentChildSequence(blogId,parentId);
 
@@ -267,9 +264,6 @@ public class BlogController {
                 blogComment.setEmailAddress(email);
                 blogComment.setCommentText(comment);
                 blogComment.setCreatedDate(currentDate);
-
-                //blogComments.add(blogComment);
-                //blog.setComments(blogComments);
                 commentService.addUpdateComment(blogComment);
                 model.addAttribute("blog", blog);
             }

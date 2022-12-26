@@ -11,7 +11,7 @@ public class BlogpressUtil {
 
 	private static Logger logger =  LoggerFactory.getLogger(BlogpressUtil.class);
 	
-	private static String elasticDateFormat = "MM-dd-yyyy'T'HH:mm:ss";
+	private static String dateFormat = "MM-dd-yyyy'T'HH:mm:ss";
 	private static String displayDateFormat = "MMMMM dd yyyy h:mm:ss a";
 	private static final String ALPHA_NUMERIC_STRING = "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789";
 	private static int randomNoLength=10;
@@ -50,7 +50,7 @@ public class BlogpressUtil {
 	 * @return
 	 */
 	public static String getFormattedDateForSearch(Date inputDate) {
-		return getFormattedDate(inputDate, getDateFormatObj(elasticDateFormat));
+		return getFormattedDate(inputDate, getDateFormatObj(dateFormat));
 	}
 	
 	

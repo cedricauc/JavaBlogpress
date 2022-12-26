@@ -34,19 +34,19 @@
  					<div class="card-footer text-muted">
 						{{#showApproveReject}}
 						 <div>
-					 	 <form th:action="@{/updateCommentStatus}" method="post" id="updateCommentStatusFrm-{{id}}">
-							<input type="hidden" name="blogId" value="{{blogId}}">
-							<input type="hidden" name="commentId" value="{{id}}">
-							<input type="hidden" name="commentStatus" id="commentStatus-{{id}}" value="">
-							<button type="button" class="btn btn-primary" id="approveComment-{{id}}">Approve</button>
-							<button type="button" class="btn btn-primary" id="rejectComment-{{id}}">Reject</button>
+					 	 <form th:action="@{/updateCommentStatus}" method="post" id="updateCommentStatusFrm-{{commentId}}">
+							<input type="hidden" name="blogId" value="{{blog.id}}">
+							<input type="hidden" name="commentId" value="{{commentId}}">
+							<input type="hidden" name="commentStatus" id="commentStatus-{{commentId}}" value="">
+							<button type="button" class="btn btn-primary" id="approveComment-{{commentId}}">Approve</button>
+							<button type="button" class="btn btn-primary" id="rejectComment-{{commentId}}">Reject</button>
 					 	 </form>
 						 </div>
 						{{/showApproveReject}}
 						{{#showReply}}
 						 <div>
 					       <form th:action="@{/replyComment}" method="post">
-						     <input type="hidden" name="blogId" value="{{blogId}}">
+						     <input type="hidden" name="blogId" value="{{blog.id}}">
 						     <input type="hidden" name="commentId" value="{{commentId}}">
 						     <button type="button" class="btn btn-primary">Reply</button>
 					       </form>
@@ -59,19 +59,19 @@
 	<script type="text/javascript">
 		 	$(document).ready(function(){
 		 		$("body").delegate("button[id^='approveComment']","click",function(){
-		 			var id = $(this).attr("id");
-		 			var commentId = id.split("-")[1];
-		 			var formId= "#updateCommentStatusFrm-"+commentId;
-		 			var statusId = "#commentStatus-"+commentId;
+		 			const id = $(this).attr("id");
+		 			const commentId = id.split("-")[1];
+		 			const formId= "#updateCommentStatusFrm-"+commentId;
+		 			const statusId = "#commentStatus-"+commentId;
 		 			$(statusId).val("A");
 		 			$(formId).submit();
 		 		})
 		 		
 		 	 $("body").delegate("button[id^='rejectComment']","click",function(){
-		 			var id = $(this).attr("id");
-		 			var commentId = id.split("-")[1];
-		 			var formId= "#updateCommentStatusFrm-"+commentId;
-		 			var statusId = "#commentStatus-"+commentId;
+		 			const id = $(this).attr("id");
+		 			const commentId = id.split("-")[1];
+		 			const formId= "#updateCommentStatusFrm-"+commentId;
+		 			const statusId = "#commentStatus-"+commentId;
 		 			$(statusId).val("R");
 		 			$(formId).submit();
 		 		})
@@ -79,24 +79,30 @@
 		 </script>
 
 	<script th:inline="javascript" type="text/javascript">
-		 	jQuery(document).ready(function(){
-				var commentData = {};
-				var template = $("#comment_template").html();
-				jQuery.get(/*[[@{/api/listAllComments}]]*/, function(data, status){
-					for (var i = 0; i < data.length; i++) {
-					    var comment = data[i];
-					    if(comment.status === 'M'){
-					    	comment["showApproveReject"]="true";
-					    }
-					    if(comment.status === 'A'){
-					    	comment["showReply"]="true";
-					    }
+			async function fetchData() {
+				let commentData = {};
+				const template = $("#comment_template").html()
+				const response = await fetch("/api/listAllComments")
+				if (response.status == 200) {
+					const data = await response.json();
+					for (let i = 0; i < data.length; i++) {
+						const comment = data[i];
+						if(comment.status === 'M'){
+							comment["showApproveReject"]="true";
+						}
+						if(comment.status === 'A'){
+							comment["showReply"]="true";
+						}
 					}
 					commentData["comments"] = data;
-			        var text = Mustache.render(template, commentData);
-			        $("#commentList").html(text);    
-			    });
-			});
+					const text = Mustache.render(template, commentData);
+					$("#commentList").html(text);
+				}
+			}
+
+			window.addEventListener("load", (event) => {
+				fetchData()
+			})
 		</script>
 </body>
 </html>
